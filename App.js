@@ -1,83 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
-import { Button, FlatList, Image, StyleSheet, Text, TextInput, View } from 'react-native';
-import { useState } from 'react';
+import * as React from 'react';
+import Manager from './Manager';
+// import { View, Text, Button } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Home from './src/Screen/Home';
+import Info from './src/Screen/Info';
+import List from './src/Screen/List';
+import ProductScreen from './src/Screen/Product';
 
-export default function App() {
+// function HomeScreen(props) {
+//   const navigation = props.navigation;
+//   return (
+//     <View>
+//       <Button
+//         title='Sang Manager'
+//         onPress={() => navigation.navigate('Manager')}
+//       />
+//     </View>
+//   );
+// }
 
-  const [showState, changeShowState] = useState(false);
+const Stack = createNativeStackNavigator();
 
-  const [nameState, changeNameState] = useState('');
-  const [descState, changeDescState] = useState('');
-  const [imgState, changeImgState] = useState('');
-
-  const [data, setData] = useState([]);
-
-  const addData = () => {
-    setData([...data, { nameState, descState, imgState }]);
-  };
-
+function App() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Họ tên : Lê Công Tuấn Hùng</Text>
-      <Text style={styles.header}>MSV : PH25613</Text>
-      <Button title="Thêm mới" onPress={() => changeShowState(true)} />
-      {showState ? (
-        <>
-          <TextInput style={styles.textInput} onChangeText={changeNameState} placeholder='Họ tên' />
-          <TextInput style={styles.textInput} onChangeText={changeDescState} placeholder='Mô tả' />
-          <TextInput style={styles.textInput} onChangeText={changeImgState} placeholder='Avatar' />
-          <View style={{flexDirection:"row"}}>
-            <Button title='Hủy' onPress={() => changeShowState(false)} color='#Ff0000'/>
-            <Button title='Thêm' onPress={addData}/>
-          </View>
-        </>
-      ) : (
-        null
-      )}
-      <FlatList
-        data={data}
-        renderItem={({ item }) => (
-          <>
-            <View style={{ flexDirection: 'row', marginTop: 20 }}>
-              <Image style={styles.avatar} source={{ uri: item.imgState }} />
-              <View style={styles.text}>
-                <Text>Họ tên: {item.nameState}</Text>
-                <Text>Desc: {item.descState}</Text>
-              </View>
-            </View>
-          </>
-        )}
-      />
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name='Home' component={Home}/>
+        <Stack.Screen name='Info' component={Info}/>
+        <Stack.Screen name='UserList' component={List}/>
+        <Stack.Screen name='Manager' component={Manager}/>
+        <Stack.Screen name='Product' component={ProductScreen}/>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 60,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  header: {
-    fontSize: 32,
-  }
-  , textInput: {
-    width: 320,
-    height: 64,
-    fontSize: 32,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    color: '#B762bd'
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25
-  },
-  text: {
-    marginLeft: 30
-  }
-});
+export default App;
